@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="main-container">
+    <div class="inner-container">
+        <div class="registration-header">
+            <span>
+                Registration
+            </span>
+            <label>
+                Fast and easy
+            </label>
+        </div>
+        <div class="registration-body">
+            <form method="post">
+                {%csrf_token%}
+                <div class="registration-name-lastname">
+                    <input class="input1" placeholder="Name" type="text" id="first_name" name="first_name"
+                           required="required">
+                    <input class="input1" placeholder="Surname" type="text" id="last_name" name="last_name"
+                           required="required">
+                </div>
+                <input class="input1" placeholder="Email address" required="required" type="email" id="email"
+                       name="email">
+                <input class="input1" placeholder="Username" required="required" type="text" name="username"
+                       id="username">
+                <input class="input1" placeholder="Password" required="required" type="password" id="password"
+                       name="password">
+                <input class="input1" placeholder="Password confirm" required="required" type="password"
+                       id="password-confirm" name="password-confirm">
+                <label>
+                    Birth day
+                </label>
+                <input class="input1" type="date" required="required" id="birthday" name="birthday" value="">
+                <input type="submit" value="Register" class="blue-button input1">
+            </form>
+
+        </div>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {%if message.tags%} class="{{ message.tags }}" {%endif%}>{%autoescape off%}{{message}}{%endautoescape%}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -5,10 +5,54 @@
     <title>Title</title>
     {%load static%}
     <link rel="stylesheet" href="{%static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <header class="header">
-    123
+    <div class="logo">
+        <a href="">
+            <img src="{%static 'images/logo.jpg'%}">
+        </a>
+    </div>
+
+    <div class="header-container">
+        <a href="" class="header-button">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+        <a href="" class="header-button">
+            <i class="fa fa-user" aria-hidden="true"></i>
+        </a>
+        <a href="" class="header-button">
+            <i class="fa fa-users" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class="header-info">
+        <a href class="header-large-button">
+            <div>
+                find friends
+            </div>
+
+        </a>
+
+        <a href class="header-button2">
+            <div>
+                <i class="fa fa-comment" aria-hidden="true"></i>
+            </div>
+        </a>
+
+        <a href class="header-button2">
+            <div>
+                <i class="fa fa-bell" aria-hidden="true"></i>
+            </div>
+        </a>
+
+        <a href class="header-user">
+            <div>
+                <img src="{%static 'images/user.jpg'%}">
+            </div>
+        </a>
+    </div>
 
 
 </header>

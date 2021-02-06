@@ -3,12 +3,282 @@ body{
     margin:0;
 }
 
+
 .header{
     position: fixed;
     display:flex;
     background: white;
     width:100%;
-    height: 7%;
+    height: 70px;
     box-shadow: 0.4em 2px rgba(122,122,122,0.1);
 }
 
+.logo{
+    margin: 15px;
+}
+
+.logo img{
+    height:40px;
+    width:40px;
+}
+
+.header-container{
+    display:flex;
+    position:absolute;
+    right:45%;
+    top:0;
+    text-align:center;
+}
+
+.header-button{
+    text-decoration:none;
+    color:#65676b;
+    font-size: 28px;
+    padding:20px;
+    margin-left:10px;
+
+}
+
+
+.header-button:hover{
+    background-color: #f0f2f5;
+}
+
+
+.header-info{
+    padding: 15px;
+    display: flex;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+
+.header-button2{
+    height:40px;
+    width:40px;
+    text-decoration:none;
+    color:#1d1e24;
+    border-radius:50%;
+    background-color: #e4e6eb;
+    margin-left:15px;
+}
+
+.header-button2:hover{
+    background-color:#d9dadf;
+    }
+
+.header-button2 div{
+    text-align:center;
+    padding-top:10px;
+}
+
+
+.header-large-button{
+    height:40px;
+    width:120px;
+    text-decoration:none;
+    color:#1d1e24;
+    border-radius:15px;
+    margin-left:15px;
+    background-color: #e4e6eb;
+}
+
+.header-large-button:hover{
+    background-color:#d9dadf;
+}
+
+.header-large-button div{
+    text-align:center;
+    padding-top:10px;
+    font-size:18px;
+}
+
+
+.header-user{
+    margin-left: 15px;
+}
+.header-user img{
+    height:40px;
+    width:40px;
+}
+
+
+
+.main-container{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.inner-container{
+    position:absolute;
+    left:35%;
+    top:20%;
+    border-radius: 6px;
+    background-color:#ffffff;
+    width: 30%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    text-align:center;
+}
+
+.registration-header{
+    border-bottom:1px solid #dadde1;
+    display:grid;
+}
+
+
+.registration-header span{
+    margin-left:20px;
+    color: black;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.registration-header label{
+    color: #606770;
+    font-size:18px;
+    margin-left:20px;
+}
+
+.registration-body{
+    padding: 15px;
+}
+
+.registration-name-lastname{
+    display:flex;
+}
+
+.input1{
+    background-color:#f5f6f7;
+    border:1px solid #ccd0d5;
+    border-radius: 5px;
+    height: 40px;
+    width: 90%;
+    margin-right:auto;
+    margin-left:auto;
+    padding-left:20px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.registration-name-lastname input{
+
+    width: 40%;
+    outline: none;
+    padding-left: 20px;
+}
+
+.messages{
+    list-style: none;
+    position: fixed;
+    bottom: 10px;
+    min-height: 2em;
+
+}
+
+.messages li{
+    margin-left: -20px;
+    text-align: center;
+    width: 160px;
+    opacity: 0;
+    border-radius: 4px;
+    animation: fadeOut 4s linear forwards;
+    padding: 10px
+}
+
+
+
+@keyframes fadeOut {
+
+    0%  { opacity: 0; }
+
+    10% { opacity: 1; }
+
+    90% { opacity: 1; transform: translateX(0px);}
+
+    99% { opacity: 0; transform: translateX(-30px);}
+
+    100% { opacity: 0; }
+}
+
+.error{
+    color: #d35f52;
+    border: 1px solid #d7bcb8;
+    background-color: #fee6e4;
+
+}
+
+.blue-button{
+    width: 30% !important;
+    padding-left:10px !important;
+    height: 40px;
+    color: white !important;
+    font-weight: 600 !important;
+    background-color: #1877f2 !important;
+    cursor:pointer;
+    text-decoration:none;
+    outline:none;
+}
+
+.blue-button:hover{
+    background-color: #166fe5!important;
+}
+
+.facebook-img{
+    width:100%;
+    height: 80px;
+}
+
+.inner-container span{
+    font-size:24px;
+}
+
+.wide{
+    width: 95%!important;
+}
+
+.bottom-line{
+    border-bottom: 1px solid #e4e6eb;
+}
+
+.inner-container label{
+    color:#a699bc;
+    background-color:white;
+
+}
+
+.top-line{
+   border-top: 1px solid #e4e6eb;
+}
+
+.green-button{
+    width: 30% !important;
+    padding-left:10px !important;
+    height: 40px;
+    color: white !important;
+    font-weight: 600 !important;
+    background-color: #42b72a !important;
+    cursor:pointer;
+    text-decoration:none;
+    outline:none;
+    border-radius: 5px;
+}
+
+.green-button:hover{
+    background-color: #35a321!important;
+}
+
+.blue-underline-href{
+    text-decoration:none;
+    color:blue;
+}
+
+.blue-underline-href:hover{
+    text-decoration:underline;
+}
+
+.button-href{
+    display:block;
+    line-height: 40px;
+    padding: 5px;
+}

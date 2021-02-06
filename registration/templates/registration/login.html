@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="main-container">
+    <div class="inner-container">
+        <img class="facebook-img" src="{%static 'images/facebook.svg'%}">
+        <span class="span-login">Facebook login </span>
+        <form method="post" class="bottom-line">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" class="input1 blue-button wide" value="Log in">
+        </form>
+        <a href class="blue-underline-href">Forgot your account? </a><br><br>
+
+        <label>Or</label>
+        <div style="margin-top:10px;">
+            <a class="input1 green-button button-href" href="{%url 'registration'%}">Create account</a>
+        </div>
+
+
+    </div>
+
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {%if message.tags%} class="{{ message.tags }}" {%endif%}>{%autoescape off%}{{message}}{%endautoescape%}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+</body>
+</html>
