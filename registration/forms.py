@@ -17,6 +17,6 @@ class AccountChangeForm(UserChangeForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input1', 'placeholder': 'Email'}), label='')
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input1', 'placeholder': 'Username'}), label='')
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input1', 'placeholder': 'Password'}),
                                label='')
