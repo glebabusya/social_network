@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.models import AnonymousUser
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
@@ -96,6 +97,9 @@ class RegistrationView(View):
         password_confirm = request.POST.get('password-confirm')
         birthday = request.POST.get('birthday')
 
+        first_name[0] = first_name[0].upper()
+        last_name[0] = last_name[0].upper()
+
         for symbol in self.symbols:
             if symbol in username:
                 messages.error(request, 'Create a unique user')
@@ -110,7 +114,7 @@ class RegistrationView(View):
                                                             birthday=birthday,
                                                             password=password)
                 user.save()
-                return redirect('home')  # redirect to user profile
+                return redirect('profile')  # redirect to user profile
             except IntegrityError:
                 messages.error(request, 'Create a unique user')
         else:
@@ -120,7 +124,8 @@ class RegistrationView(View):
 
 class LoginView(View):
     def get(self, request):
-        logout(request)
+        if request.user.is_authenticated:
+            return redirect('news')
         form = forms.LoginForm()
         context = {'form': form}
         return render(request, 'registration/login.html', context)
@@ -136,7 +141,7 @@ class LoginView(View):
 
             if user is not None:
                 login(request, user)
-                return redirect('home')  # redirect to user profile
+                return redirect('profile')  # redirect to user profile
             else:
                 messages.error(request, 'Incorrect password')
         return redirect('login')
@@ -155,7 +160,7 @@ class AccountRecoveryView(View):
             return render(request, 'registration/recovery.html')
 
         send_mail('bot', '123123', 'glebabusya@mail.ru', [user.email],
-                  html_message=f'<a href="http://127.0.0.1:8000/home/password-change{generate_hash_url(user)}">qweqwe</a>')
+                  html_message=f'<a href="http://127.0.0.1:8000/news/password-change{generate_hash_url(user)}">qweqwe</a>')
 
         return redirect('login')
 
