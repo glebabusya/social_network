@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "news/news.html" %}
+    {%load static%}
+</head>
+<body>
+{%block body%}
+<div class="main-container">
+    <div class="inner-container ">
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {%csrf_token%}
+            {{form.as_p}}
+            <div style="margin-right:10%; text-align:center;">
+                <input type="submit" class="blue-button input1" value="Save">
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{%endblock%}
+</body>
+</html>

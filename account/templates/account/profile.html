@@ -14,7 +14,7 @@
             <div class="user-avatar">
                 <img src="{{user.avatar.url}}">
             </div>
-            <a href="" class="button-href muted-button">Redact</a>
+            <a href="{%url 'redact' user.username%}" class="button-href muted-button">Redact</a>
         </div>
 
         <div class="block" style="text-align:left;">
@@ -293,7 +293,7 @@
                         </span>
                         <input class="invisible" type="submit">
                     </label>
-                    <input class="invisible" type="text" value="{{note.id}}" name="form" id="form">
+                    <input style="width:1%;" class="invisible" type="text" value="{{note.id}}" name="form" id="form">
                 </form>
             </div>
             {%endif%}

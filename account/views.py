@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from news.models import Note, Comment
 from django.utils import timezone
+from news.views import leave_comment
+from . import forms
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -29,17 +31,31 @@ class ProfileView(LoginRequiredMixin, View):
         return render(request, 'account/profile.html', context)
 
     def post(self, request, username):
-        data = request.POST
+        leave_comment(request)
+        return redirect('profile', username)
 
-        note = Note.objects.get(pk=int(data.get('form')))
-        if data.get('text') or request.FILES.get('img'):
-            comment = Comment(
-                author=request.user,
-                text=data.get('text'),
-                note=note,
-                image=request.FILES.get('img'),
-                post_time=timezone.now()
-            )
-            comment.save()
 
+class RedactProfileView(LoginRequiredMixin, View):
+    login_url = 'registration'
+
+    def get(self, request, username):
+        try:
+            user = get_user_model().objects.get(username=username)
+        except get_user_model().DoesNotExist:
+            return redirect('news')
+
+        form = forms.ProfileForm(instance=user)
+
+        context = {
+            'user': user,
+            'form': form
+        }
+
+        return render(request, 'account/redact.html', context)
+
+    def post(self, request, username):
+        user = request.user
+        form = forms.ProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
         return redirect('profile', username)

@@ -5,11 +5,16 @@ from .managers import CustomUserManager
 
 
 class Account(AbstractUser):
-    username = models.CharField(max_length=150, unique=True)
+    GENDER = [
+        ('Male', 'Male'),
+        ('Female', 'Female')
+    ]
 
+    username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    gender = models.CharField(max_length=10, choices=GENDER, blank=True)
     phone_number = models.CharField(default=None, null=True, blank=True, max_length=20, )
     avatar = models.ImageField(default='/users/user.jpg', upload_to='users')
     birthday = models.DateField(default=timezone.now())
@@ -20,6 +25,10 @@ class Account(AbstractUser):
     current_info = models.CharField(default=None, null=True, blank=True, max_length=500)
 
     time_join = models.DateTimeField(default=timezone.now())
+
+    banned = models.BooleanField(default=False)
+    closed = models.BooleanField(default=False)
+    can_comment = models.BooleanField(default=True)
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'

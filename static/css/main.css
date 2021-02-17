@@ -574,7 +574,7 @@ body{
     border:1px solid #ccd0d5;
     border-radius: 5px 0px 0px 5px;
     height: 30px;
-    width: 50%;
+    width: 70%;
     margin-left:auto;
     padding-left:20px;
     margin-bottom: 10px;
@@ -615,3 +615,25 @@ body{
     pointer-events:none;
     user-select:none;
 }
+
+.profile-form{
+    text-align:left;
+    margin-left:10%;
+}
+
+.profile-input{
+    border:1px solid #ccd0d5;
+    border-radius: 5px;
+    height:20px;
+    outline: none;
+    padding:4px;
+    width:50%;
+    margin-left:auto;
+    margin-right:10%;
+}
+
+.profile-form p{
+    width:100%;
+    display:flex;
+}
+

@@ -13,8 +13,9 @@ class AccountAdmin(UserAdmin):
     list_filter = ('email', 'is_staff', 'is_active',)
 
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'username', 'first_name', 'last_name', 'phone_number', 'birthday',
-                           'avatar', 'work', 'study', 'city', 'current_info', 'time_join')}),
+        (None, {'fields': ('email', 'password', 'username', 'gender', 'first_name', 'last_name', 'phone_number',
+                           'birthday', 'avatar', 'work', 'study', 'city', 'current_info', 'time_join', 'can_comment',
+                           'closed', 'banned')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
     add_fieldsets = (
