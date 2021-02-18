@@ -30,7 +30,8 @@ class ProfileForm(forms.ModelForm):
 
     # special inputs
     current_info = forms.CharField(required=False,
-                                   widget=forms.TextInput(attrs={'class': 'profile-input current-info-input'}))
+                                   widget=forms.Textarea(
+                                       attrs={'class': 'profile-input current-info-input', 'rows': "10", 'cols': '10'}))
 
     avatar = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'profile-input'}))
 

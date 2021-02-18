@@ -397,16 +397,19 @@ body{
     margin-top:10px;
     padding-bottom:10px;
     margin-bottom:10px;
+    text-align:left;
 }
 
 .profile-info span{
-
+    width:30%;
     margin-right:auto;
 }
 
 .profile-info label{
+    text-align:left;
+    width:50%;
     margin-right:auto;
-    margin-left:-15%;
+    margin-left:auto;
 }
 
 .profile-buttons{
@@ -468,7 +471,7 @@ body{
 
 .post-container{
     text-align:left;
-    width:510px;
+    width:545px;
     padding:20px;
 }
 
@@ -479,12 +482,13 @@ body{
 
 .post-image1{
     width:370px;
-    height:340px;
+    height:350px;
 }
 
 .post-image2{
     width:170px;
     height:170px;
+    margin:5px;
 }
 
 .post-buttons{
@@ -637,3 +641,63 @@ body{
     display:flex;
 }
 
+.blue-button2{
+    padding-left:10px !important;
+    height: 30px;
+    color: white !important;
+    background-color: #5181b8;
+    cursor:pointer;
+    text-decoration:none;
+    outline:none;
+    padding-top:0px;
+    padding-bottom:10px;
+}
+
+.blue-button2:hover{
+    background-color:#6690c0;
+}
+
+.back-container{
+    display:flex;
+    width:520px;
+    padding-bottom:10px;
+    margin-bottom:10px;
+}
+
+.back-container label{
+    margin-left:-10%;
+    margin-right:auto;
+    color: #242526;
+    font-weight: 600;
+    font-size: 24px;
+    padding-bottom:4px;
+}
+
+.back-container a{
+    font-size:18px;
+    border-radius: 4px;
+}
+
+.note-form{
+    padding:10px;
+}
+
+.note-form form{
+    display:flex;
+    flex-direction:column;
+}
+
+.note-form textarea{
+    resize:vertical;
+    overflow: hidden;
+    height: 300px;
+    outline: none;
+    border: none;
+    padding:5px;
+}
+
+.current-info-input{
+    resize:none;
+    overflow: hidden;
+    height: 100px;
+}

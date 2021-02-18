@@ -14,7 +14,18 @@
             <div class="user-avatar">
                 <img src="{{user.avatar.url}}">
             </div>
+            {%if owner%}
             <a href="{%url 'redact' user.username%}" class="button-href muted-button">Redact</a>
+            {%else%}
+            <a href class="button-href blue-button2">
+                Send message
+            </a>
+            <br>
+            <a href class="button-href blue-button2">
+                Add friend
+            </a>
+
+            {%endif%}
         </div>
 
         <div class="block" style="text-align:left;">
@@ -41,7 +52,7 @@
                     Alina
                 </a>
             </div>
-
+            {%if owner%}
             <span>
                 Friends online <label style="color:grey">69</label>
             </span>
@@ -65,11 +76,35 @@
                     Alina
                 </a>
             </div>
+            {%else%}
+            <span>
+                Common friends <label style="color:grey">6</label>
+            </span>
 
+            <div class="friend-list">
+                <!цикл>
+                <a href class="blue-underline-href image-href">
+                    <img src="{%static 'images/user.jpg'%}">
+                    Alina
+                </a>
+                <a href class="blue-underline-href image-href">
+                    <img src="{%static 'images/user.jpg'%}">
+                    Alina
+                </a>
+                <a href class="blue-underline-href image-href">
+                    <img src="{%static 'images/user.jpg'%}">
+                    Alina
+                </a>
+                <a href class="blue-underline-href image-href">
+                    <img src="{%static 'images/user.jpg'%}">
+                    Alina
+                </a>
+            </div>
+            {%endif%}
         </div>
 
         <div class="block" style="text-align:left;">
-            <span s>Subscribe <label style="color:grey">46</label></span>
+            <span>Subscribe <label style="color:grey">46</label></span>
             <!цикл>
             <div class="row1">
                 <a href class="image-href">
@@ -114,10 +149,11 @@
 
     <div class="column2">
         <div class="block">
-            <div class="profile-current-info bottom-line">
+            <div class="profile-current-info">
 
                 <div>
-                    <span style="font-size:26px;">{{user.first_name}} {{user.last_name}}</span> <label>{{user.time_join}}</label>
+                    <span style="font-size:26px;">{{user.first_name}} {{user.last_name}}</span>
+                    <label>{{time_delta}}</label>
                 </div>
                 <span>
                     {%if user.current_info%}
@@ -125,12 +161,50 @@
                     {%endif%}
                 </span>
             </div>
-            <div class="profile-info bottom-line">
+
+            <div class="profile-info bottom-line top-line" style="padding-top:5px;">
                 <span>
-                    birthday:
+                    Birthday:
                 </span>
                 <label>{{user.birthday}}</label>
             </div>
+
+            {%if user.city%}
+            <div class="profile-info bottom-line">
+                <span>
+                    City:
+                </span>
+                <label>{{user.city}}</label>
+            </div>
+            {%endif%}
+
+            {%if user.phone_number%}
+            <div class="profile-info bottom-line">
+                <span>
+                    Phone number:
+                </span>
+                <label>{{user.phone_number}}</label>
+            </div>
+            {%endif%}
+
+            {%if user.work%}
+            <div class="profile-info bottom-line">
+                <span>
+                    Work:
+                </span>
+                <label>{{user.work}}</label>
+            </div>
+            {%endif%}
+
+            {%if user.study%}
+            <div class="profile-info bottom-line">
+                <span>
+                    Education:
+                </span>
+                <label>{{user.study}}</label>
+            </div>
+            {%endif%}
+
 
             <div class="profile-buttons">
                 <a class="page-counter" href>
@@ -184,10 +258,11 @@
             </div>
         </div>
 
+        {%if owner%}
         <div class="block">
-            <a href class="blue-underline-href">+ Add note</a>
+            <a href="{%url 'add_note'%}" class="blue-underline-href">+ Add note</a>
         </div>
-
+        {% endif%}
 
         {%for note in notes%}
         <div class="block">
@@ -218,8 +293,8 @@
                     <img class="post-image1-wide" src="{{note.image1.url}}">
                     {%endif%}
                     <div>
-                        <img class="post-image2" src="{{note.image2.url}}">
-                        <img class="post-image2" src="{{note.image3.url}}">
+                        <img class="post-image2" style="margin-bottom:0px; margin-top:0px;" src="{{note.image2.url}}">
+                        <img class="post-image2" style="margin-top:7px" src="{{note.image3.url}}">
                     </div>
 
                 </div>
@@ -250,12 +325,12 @@
                 {%for comment in note.comment_set.all%}
                 <div class="comment-header">
                     <div style="display:flex;">
-                        <a href="{%url 'profile' user%}" class="image-href-small">
-                            <img src="{{user.avatar.url}}">
+                        <a href="{%url 'profile' comment.author%}" class="image-href-small">
+                            <img src="{{comment.author.avatar.url}}">
                         </a>
-                        <a href="{%url 'profile' user%}" class="blue-underline-href"
+                        <a href="{%url 'profile' comment.author%}" class="blue-underline-href"
                            style="margin-top:10px; margin-left:-20px;">
-                            <span>{{user.first_name}} {{user.last_name}}</span>
+                            <span>{{comment.author.first_name}} {{comment.author.last_name}}</span>
                         </a>
                     </div>
                     <span style="color:grey">

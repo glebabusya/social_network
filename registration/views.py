@@ -124,8 +124,7 @@ class RegistrationView(View):
 
 class LoginView(View):
     def get(self, request):
-        if request.user.is_authenticated:
-            return redirect('news')
+        logout(request)
         form = forms.LoginForm()
         context = {'form': form}
         return render(request, 'registration/login.html', context)
@@ -141,7 +140,7 @@ class LoginView(View):
 
             if user is not None:
                 login(request, user)
-                return redirect('profile')  # redirect to user profile
+                return redirect('profile', user.username)  # redirect to user profile
             else:
                 messages.error(request, 'Incorrect password')
         return redirect('login')

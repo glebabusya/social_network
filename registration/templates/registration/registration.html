@@ -39,7 +39,13 @@
                     Birth day
                 </label>
                 <input class="input1" type="date" required="required" id="birthday" name="birthday" value="">
-                <input type="submit" value="Register" class="blue-button input1">
+                <div style="display:flex;">
+                    <a href="{%url 'login'%}" class="blue-button button-href"
+                       style="padding:0px !important; line-height:normal; margin-left:auto;">Already have account</a>
+                    <input type="submit" value="Register" class="blue-button input1">
+                </div>
+
+
             </form>
 
         </div>
