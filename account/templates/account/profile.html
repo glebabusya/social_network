@@ -17,92 +17,57 @@
             {%if owner%}
             <a href="{%url 'redact' user.username%}" class="button-href muted-button">Redact</a>
             {%else%}
-            <a href class="button-href blue-button2">
+            <a href class="button-href blue-button2"><!Ссылка на сообщения>
                 Send message
             </a>
             <br>
-            <a href class="button-href blue-button2">
+            {%if request.user in friends%}
+            <a href="{%url 'add_friend' username=user.username operation='remove'%}" class="button-href blue-button2">
+                Remove friend
+            </a>
+            {%else%}
+            <a href="{%url 'add_friend' username=user.username operation='add'%}" class="button-href blue-button2">
                 Add friend
             </a>
-
+            {%endif%}
             {%endif%}
         </div>
 
+        {%if request.user in friends or not user.closed or owner%}
         <div class="block" style="text-align:left;">
             <span>
-                Friends <label style="color:grey">69</label>
-            </span>
-
-            <div class="friend-list bottom-line" style="margin-bottom:10px;">
-                <!цикл>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-            </div>
-            {%if owner%}
-            <span>
-                Friends online <label style="color:grey">69</label>
+                Friends <label style="color:grey">{{friends.count}}</label>
             </span>
 
             <div class="friend-list">
-                <!цикл>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
+                {%for friend in friends%}
+                <a href="{%url 'profile' friend.username%}" class="blue-underline-href image-href">
+                    <img src="{{friend.avatar.url}}">
+                    {{friend.first_name}}
                 </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
+                {%endfor%}
             </div>
-            {%else%}
+            {%if not owner%}
+            {%if common_friends%}
             <span>
-                Common friends <label style="color:grey">6</label>
+                Common friends <label style="color:grey">{{common_friends|length}}</label>
             </span>
 
+
             <div class="friend-list">
-                <!цикл>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
+                {%for friend in common_friends%}
+                <a href="{%url 'profile' friend.username%}" class="blue-underline-href image-href">
+                    <img src="{{friend.avatar.url}}">
+                    {{friend.first_name}}
                 </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
-                <a href class="blue-underline-href image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                    Alina
-                </a>
+                {%endfor%}
             </div>
             {%endif%}
+            {%endif%}
         </div>
+        {%endif%}
 
+        {%if request.user in friends or not user.closed or owner%}
         <div class="block" style="text-align:left;">
             <span>Subscribe <label style="color:grey">46</label></span>
             <!цикл>
@@ -144,7 +109,7 @@
             </div>
 
         </div>
-
+        {%endif%}
     </div>
 
     <div class="column2">
@@ -209,7 +174,7 @@
             <div class="profile-buttons">
                 <a class="page-counter" href>
                     <div class="counter">
-                        69
+                        {{friends.count}}
                     </div>
                     <label>
                         friends
@@ -235,6 +200,7 @@
             </div>
         </div>
 
+        {%if request.user in friends or not user.closed or owner%}
         <div class="block">
             <div class="small-info">
                 My photos
@@ -293,8 +259,12 @@
                     <img class="post-image1-wide" src="{{note.image1.url}}">
                     {%endif%}
                     <div>
+                        {%if note.image2%}
                         <img class="post-image2" style="margin-bottom:0px; margin-top:0px;" src="{{note.image2.url}}">
+                        {%if note.image3%}
                         <img class="post-image2" style="margin-top:7px" src="{{note.image3.url}}">
+                        {%endif%}
+                        {%endif%}
                     </div>
 
                 </div>
@@ -302,9 +272,17 @@
             </div>
 
             <div class="post-buttons top-line bottom-line">
-                <a href="" class="post-button">
+                <a href="{%url 'like' note.pk 'profile' user.username%}" class="post-button">
+
+                    {%if request.user.id in note.liked %}
+                    <i class="fa fa-heart" aria-hidden="true" style="color:#ff0000"></i>
+                    <span style="color:#ff0000">{{note.like_set.all.count}}</span>
+                    {%else%}
                     <i class="fa fa-heart-o" aria-hidden="true"></i>
-                    <span>35</span>
+                    <span>{{note.like_set.all.count}}</span>
+                    {%endif%}
+
+
                 </a>
 
                 <a href="" class="post-button">
@@ -374,6 +352,26 @@
             {%endif%}
         </div>
         {%endfor%}
+
+        {%else%}<!Закрытый аккаунт>
+        <div class="block">
+            <div style="display:flex; flex-direction:column">
+                <label style="font-size:30px; color:#828282;">
+                    <i class="fa fa-lock" aria-hidden="true"></i>
+                </label>
+                <span>
+                        <b>This is a private profile</b>
+                    </span>
+
+                <span style="margin-top:10px;">
+                        Add {{user.first_name}} as friend to watch her posts, photos and other materials
+                    </span>
+            </div>
+
+        </div>
+
+        {%endif%}
+
 
     </div>
 </div>

@@ -2,11 +2,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from news.models import Note, Comment
+from news.models import Note
 from django.utils import timezone
 from news.views import leave_comment
+from registration.models import Account
 from . import forms
-import datetime
+from .models import Friend
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -23,33 +24,25 @@ class ProfileView(LoginRequiredMixin, View):
         context = {
             'user': user,
             'owner': False,
-            'notes': notes
+            'notes': notes,
         }
+
+        try:
+            friends = Friend.objects.get(current_user=user).users.all()
+            cmn_friends = Friend.objects.get(current_user=request.user).users.exclude(pk=request.user.pk)
+            common_friends = set(friends) & set(cmn_friends)
+            context['friends'] = friends
+            context['common_friends'] = common_friends
+
+        except Friend.DoesNotExist:
+            pass
 
         if str(user) == str(request.user):
             context['owner'] = True
             user.time_join = timezone.now()
             user.save()
 
-        # Determining how long a user has been online
-        now = str(timezone.now())
-        user_join = str(user.time_join)
-
-        y1 = int(now[:4])
-        m1 = int(now[5:7])
-        d1 = int(now[8:10])
-        h1 = int(now[11:13])
-        min1 = int(now[14:16])
-
-        y2 = int(user_join[:4])
-        m2 = int(user_join[5:7])
-        d2 = int(user_join[8:10])
-        h2 = int(user_join[11:13])
-        min2 = int(user_join[14:16])
-
-        d1 = datetime.datetime(y1, m1, d1, h1, min1)
-        d2 = datetime.datetime(y2, m2, d2, h2, min2)
-        time_delta = d1 - d2
+        time_delta = timezone.now() - user.time_join
 
         if time_delta.total_seconds() < 300:
             context['time_delta'] = 'Online'
@@ -74,6 +67,12 @@ class RedactProfileView(LoginRequiredMixin, View):
         except get_user_model().DoesNotExist:
             return redirect('news')
 
+        if str(user) != str(request.user):
+            return redirect('profile', request.user.username)
+
+        user.time_join = timezone.now()
+        user.save()
+
         form = forms.ProfileForm(instance=user)
 
         context = {
@@ -89,3 +88,14 @@ class RedactProfileView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
         return redirect('profile', username)
+
+
+def change_friends(request, username, operation):
+    new_friend = Account.objects.get(username=username)
+    if operation == 'add':
+        Friend.make_friend(request.user, new_friend)
+        # Отправить уведомление
+    elif operation == 'remove':
+        Friend.lose_friend(request.user, new_friend)
+
+    return redirect('profile', new_friend.username)

@@ -20,7 +20,7 @@ class ProfileForm(forms.ModelForm):
 
     phone_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'profile-input'}))
 
-    birthday = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'profile-input'}))
+    birthday = forms.DateField(required=False, widget=forms.TextInput(attrs={'class': 'profile-input', 'type': 'date'}))
 
     city = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'profile-input'}))
 

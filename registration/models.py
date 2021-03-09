@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from .managers import CustomUserManager
+from django.conf import settings
 
 
 class Account(AbstractUser):
@@ -17,14 +18,14 @@ class Account(AbstractUser):
     gender = models.CharField(max_length=10, choices=GENDER, blank=True)
     phone_number = models.CharField(default=None, null=True, blank=True, max_length=20, )
     avatar = models.ImageField(default='/users/user.jpg', upload_to='users')
-    birthday = models.DateField(default=timezone.now())
+    birthday = models.DateField(default=timezone.now)
 
     city = models.CharField(default=None, null=True, blank=True, max_length=255)
     work = models.CharField(default=None, null=True, blank=True, max_length=255)
     study = models.CharField(default=None, null=True, blank=True, max_length=255)
     current_info = models.CharField(default=None, null=True, blank=True, max_length=500)
 
-    time_join = models.DateTimeField(default=timezone.now())
+    time_join = models.DateTimeField(default=timezone.now)
 
     banned = models.BooleanField(default=False)
     closed = models.BooleanField(default=False)
