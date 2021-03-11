@@ -30,5 +30,5 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    note = models.ForeignKey(to=Note, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
+    note = models.ForeignKey(to=Note, on_delete=models.CASCADE, blank=True)

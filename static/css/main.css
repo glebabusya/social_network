@@ -693,11 +693,125 @@ body{
     height: 300px;
     outline: none;
     border: none;
-    padding:5px;
+    padding: 5px;
 }
 
-.current-info-input{
-    resize:none;
+.current-info-input {
+    resize: none;
     overflow: hidden;
     height: 100px;
+}
+
+.muted-href {
+    text-decoration: none;
+    color: grey;
+}
+
+.note-action-dropdown {
+    display: block;
+    margin-left: auto;
+    margin-right: 10%;
+    margin-top: 3%;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    color: grey;
+}
+
+.note-action-content {
+    opacity: 0;
+    visibility: hidden;
+    position: relative;
+    z-index: 5;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border: 1px solid #e5e5e5;
+    min-width: 150px;
+    max-width: 250px;
+    background-color: white;
+    right: 500%;
+    border-radius: 5px;
+    padding-bottom: 5px;
+}
+
+
+.note-action-content a {
+    padding: 0px 15px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    position: relative;
+    height: 30px;
+    color: #2b5781;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.note-action-content a:hover {
+    background-color: #e5ebf1;
+}
+
+.note-action-dropdown:hover .note-action-content {
+    opacity: 1;
+    visibility: visible
+}
+
+
+.user-dropdown-content {
+    visibility: hidden;
+    opacity: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    position: relative;
+    min-width: 150px;
+    right: 25%;
+    padding: 0 5px 5px;
+}
+
+.user-dropdown:hover .user-dropdown-content {
+    opacity: 1;
+    visibility: visible
+}
+
+.user-dropdown-info {
+    text-decoration: none;
+    color: black;
+}
+
+.user-dropdown-info div {
+    display: flex;
+    padding: 4px;
+}
+
+.user-dropdown-info span {
+    margin-top: 10%;
+}
+
+.user-dropdown-info img {
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    margin-right: auto
+}
+
+.user-dropdown-info div:hover {
+    background-color: #e0e0e0;
+}
+
+.logout {
+    font-size: 18px;
+    margin-top: 4px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    min-width: 150px;
+    max-width: 250px;
+    color: grey;
+}
+
+.logout:hover {
+    background-color: #e0e0e0;
 }

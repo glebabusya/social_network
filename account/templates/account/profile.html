@@ -224,142 +224,23 @@
             </div>
         </div>
 
-        {%if owner%}
-        <div class="block">
-            <a href="{%url 'add_note'%}" class="blue-underline-href">+ Add note</a>
-        </div>
-        {% endif%}
-
-        {%for note in notes%}
-        <div class="block">
-            <div class="post-header">
-                <div style="display:flex;">
-                    <a href="{%url 'profile' user%}" class="image-href">
-                        <img src="{{user.avatar.url}}">
-                    </a>
-                    <a href="{%url 'profile' user%}" class="blue-underline-href"
-                       style="margin-top:20px; margin-left:10px;">
-                        <span>{{user.first_name}} {{user.last_name}}</span>
-                    </a>
+            {% if owner %}
+                <div class="block">
+                    <a href="{% url 'add_note' %}" class="blue-underline-href">+ Add note</a>
                 </div>
+            {% endif %}
 
-                <span style="color:grey">
-                    {{note.post_time}}
-                </span>
-            </div>
-            <div class="post-container">
-                <label>
-                    {{note.text}}
-                </label>
-                {%if note.image1%}
-                <div style="display:flex">
-                    {%if note.image2%}
-                    <img class="post-image1" src="{{note.image1.url}}">
-                    {%else%}
-                    <img class="post-image1-wide" src="{{note.image1.url}}">
-                    {%endif%}
-                    <div>
-                        {%if note.image2%}
-                        <img class="post-image2" style="margin-bottom:0px; margin-top:0px;" src="{{note.image2.url}}">
-                        {%if note.image3%}
-                        <img class="post-image2" style="margin-top:7px" src="{{note.image3.url}}">
-                        {%endif%}
-                        {%endif%}
-                    </div>
+            {% for note in notes %}
+                {% include 'news/note_pattern.html' %}
+            {% endfor %}
 
-                </div>
-                {%endif%}
-            </div>
-
-            <div class="post-buttons top-line bottom-line">
-                <a href="{%url 'like' note.pk 'profile' user.username%}" class="post-button">
-
-                    {%if request.user.id in note.liked %}
-                    <i class="fa fa-heart" aria-hidden="true" style="color:#ff0000"></i>
-                    <span style="color:#ff0000">{{note.like_set.all.count}}</span>
-                    {%else%}
-                    <i class="fa fa-heart-o" aria-hidden="true"></i>
-                    <span>{{note.like_set.all.count}}</span>
-                    {%endif%}
-
-
-                </a>
-
-                <a href="" class="post-button">
-                    <i class="fa fa-comment-o post-button" aria-hidden="true"></i>
-                    <span>
-                        {%if note.comment_set.count%}
-                            {{note.comment_set.count}}
-                        {%endif%}
-                    </span>
-                </a>
-
-                <a href="" class="post-button">
-                    <i class="fa fa-share post-button" aria-hidden="true"></i>
-                </a>
-            </div>
-
-            <div class="comments-container">
-                {%for comment in note.comment_set.all%}
-                <div class="comment-header">
-                    <div style="display:flex;">
-                        <a href="{%url 'profile' comment.author%}" class="image-href-small">
-                            <img src="{{comment.author.avatar.url}}">
-                        </a>
-                        <a href="{%url 'profile' comment.author%}" class="blue-underline-href"
-                           style="margin-top:10px; margin-left:-20px;">
-                            <span>{{comment.author.first_name}} {{comment.author.last_name}}</span>
-                        </a>
-                    </div>
-                    <span style="color:grey">
-                        {{comment.post_time}}
-                    </span>
-                </div>
-
-                <div class="comment-body">
-                    <span>
-                       {{comment.text}}
-                    </span>
-                    {%if comment.image%}
-                    <img src="{{comment.image.url}}">
-                    {%endif%}
-                </div>
-                {%endfor%}
-            </div>
-            {%if note.can_comment%}
-            <div class="leave-comment top-line">
-                <form class="comment-form" method="post" enctype="multipart/form-data">
-                    {%csrf_token%}
-                    <input class="comment-input" type="text" placeholder="Leave comment" name="text" id="text">
-
-                    <label class="label border-right">
-                        <span class="title">
-                            <i class="fa fa-camera" aria-hidden="true"></i>
-                        </span>
-                        <input class="invisible" type="file" name="img" id="img">
+        {% else %}<!Закрытый аккаунт>
+            <div class="block">
+                <div style="display:flex; flex-direction:column">
+                    <label style="font-size:30px; color:#828282;">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
                     </label>
-
-                    <label class="label" style="margin-right:auto">
-                        <span class="title">
-                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-
-                        </span>
-                        <input class="invisible" type="submit">
-                    </label>
-                    <input style="width:1%;" class="invisible" type="text" value="{{note.id}}" name="form" id="form">
-                </form>
-            </div>
-            {%endif%}
-        </div>
-        {%endfor%}
-
-        {%else%}<!Закрытый аккаунт>
-        <div class="block">
-            <div style="display:flex; flex-direction:column">
-                <label style="font-size:30px; color:#828282;">
-                    <i class="fa fa-lock" aria-hidden="true"></i>
-                </label>
-                <span>
+                    <span>
                         <b>This is a private profile</b>
                     </span>
 

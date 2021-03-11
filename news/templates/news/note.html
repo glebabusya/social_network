@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "news/news.html" %}
+    {% load static %}
+</head>
+<body>
+{% block body %}
+    <div class="container" style="width: 600px; margin-left:auto; margin-right: auto;: ">
+        {% include 'news/note_pattern.html' %}
+    </div>
+
+{% endblock %}
+</body>
+</html>

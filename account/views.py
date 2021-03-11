@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -25,6 +25,9 @@ class ProfileView(LoginRequiredMixin, View):
             'user': user,
             'owner': False,
             'notes': notes,
+            'back_url': 'profile',
+            'username': user.username,
+            'url': 'profile'
         }
 
         try:
