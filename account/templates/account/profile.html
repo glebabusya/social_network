@@ -39,7 +39,7 @@
                 Friends <label style="color:grey">{{friends.count}}</label>
             </span>
 
-            <div class="friend-list">
+            <div class="friend-list bottom-line" style="margin-bottom: 10px;">
                 {%for friend in friends%}
                 <a href="{%url 'profile' friend.username%}" class="blue-underline-href image-href">
                     <img src="{{friend.avatar.url}}">
@@ -60,56 +60,32 @@
                     <img src="{{friend.avatar.url}}">
                     {{friend.first_name}}
                 </a>
-                {%endfor%}
+                {% endfor %}
             </div>
-            {%endif%}
-            {%endif%}
+            {% endif %}
+            {% endif %}
         </div>
-        {%endif%}
+        {% endif %}
 
-        {%if request.user in friends or not user.closed or owner%}
-        <div class="block" style="text-align:left;">
-            <span>Subscribe <label style="color:grey">46</label></span>
-            <!цикл>
-            <div class="row1">
-                <a href class="image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                </a>
-                <div class="group-small-info">
-                    <a href class="blue-underline-href">
-                        Картинки категории Б
-                    </a>
-                    <span style="color:grey">Шутим как можем </span>
-                </div>
-
-            </div>
-            <div class="row1">
-                <a href class="image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                </a>
-                <div class="group-small-info">
-                    <a href class="blue-underline-href">
-                        Картинки категории Б
-                    </a>
-                    <span style="color:grey">Шутим как можем </span>
-                </div>
+        {% if request.user in friends or not user.closed or owner %}
+            <div class="block" style="text-align:left;">
+                <span>Subscribe <label style="color:grey">{{ groups.count }}</label></span>
+                {% for group in groups %}
+                    <div class="row1">
+                        <a href="{% url 'group' group.short_name %}" class="image-href">
+                            <img src="{{ group.avatar.url }}">
+                        </a>
+                        <div class="group-small-info">
+                            <a href="{% url 'group' group.short_name %}" class="blue-underline-href">
+                                {{ group.title }}
+                            </a>
+                            <span style="color:grey"> {{ group.current_info }} </span>
+                        </div>
+                    </div>
+                {% endfor %}
 
             </div>
-            <div class="row1">
-                <a href class="image-href">
-                    <img src="{%static 'images/user.jpg'%}">
-                </a>
-                <div class="group-small-info">
-                    <a href class="blue-underline-href">
-                        Картинки категории Б
-                    </a>
-                    <span style="color:grey">Шутим как можем </span>
-                </div>
-
-            </div>
-
-        </div>
-        {%endif%}
+        {% endif %}
     </div>
 
     <div class="column2">
@@ -191,7 +167,7 @@
                 </a>
                 <a class="page-counter" href>
                     <div class="counter">
-                        46
+                        {{ groups.count }}
                     </div>
                     <label>
                         groups
@@ -216,17 +192,17 @@
                     <img src="{%static 'images/user.jpg'%}">
                 </a>
                 <a href class="medium-image-href">
-                    <img src="{%static 'images/user.jpg'%}">
+                    <img src="{% static 'images/user.jpg' %}">
                 </a>
                 <a href class="medium-image-href">
-                    <img src="{%static 'images/user.jpg'%}">
+                    <img src="{% static 'images/user.jpg' %}">
                 </a>
             </div>
         </div>
 
             {% if owner %}
                 <div class="block">
-                    <a href="{% url 'add_note' %}" class="blue-underline-href">+ Add note</a>
+                    <a href="{% url 'add_note' 'profile' %}" class="blue-underline-href">+ Add note</a>
                 </div>
             {% endif %}
 
@@ -244,12 +220,11 @@
                         <b>This is a private profile</b>
                     </span>
 
-                <span style="margin-top:10px;">
+                    <span style="margin-top:10px;">
                         Add {{user.first_name}} as friend to watch her posts, photos and other materials
                     </span>
+                </div>
             </div>
-
-        </div>
 
         {%endif%}
 

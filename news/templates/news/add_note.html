@@ -4,42 +4,44 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% extends "news/news.html" %}
-    {%load static%}
+    {% load static %}
 </head>
 <body>
-{%block body%}
-<div class="main-container">
-    <div class="inner-container" style="width:560px;">
-        <div class="post-container">
-            <div class="back-container bottom-line">
-                <a href="{%url 'profile' user.username%} " class="muted-button" style="padding:5px; margin-right:auto;">
-                    &lt;
-                    back
-                </a>
-                <label>Add note</label>
+{% block body %}
+    <div class="main-container">
+        <div class="inner-container" style="width:560px;">
+            <div class="post-container">
+                <div class="back-container bottom-line">
+                    <a href="{% url back_url back_url_data %} " class="muted-button"
+                       style="padding:5px; margin-right:auto;">
+                        &lt;
+                        back
+                    </a>
+                    <label>Add note</label>
 
-            </div>
-            <div class="post-header">
-                <div style="display:flex;">
-                    <a href="{%url 'profile' user%}" class="image-href">
-                        <img src="{{user.avatar.url}}">
-                    </a>
-                    <a href="{%url 'profile' user%}" class="blue-underline-href"
-                       style="margin-top:20px; margin-left:10px;">
-                        <span>{{user.first_name}} {{user.last_name}}</span>
-                    </a>
+                </div>
+                <div class="post-header">
+                    <div style="display:flex;">
+                        <a href="{% url back_url back_url_data %}" class="image-href">
+                            <img src="{{ author.avatar.url }}">
+                        </a>
+                        <a href="{% url back_url back_url_data %}" class="blue-underline-href"
+                           style="margin-top:20px; margin-left:10px;">
+                            {% if request.user == author %}
+                                <span>{{ author.first_name }} {{ author.last_name }}</span>
+                            {% else %}
+                                <span>{{ author.title }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
                 </div>
 
-                <span style="color:grey">
-                    {{note.post_time}}
-                </span>
-            </div>
-            <div class="note-form">
-                <form method="post" enctype="multipart/form-data">
-                    {%csrf_token%}
-                    <textarea name="note_text" id="note_text"></textarea>
+                <div class="note-form">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <textarea name="note_text" id="note_text"></textarea>
 
-                    <label class="label top-line" style="display:flex;">
+                        <label class="label top-line" style="display:flex;">
                         <span class="title" style="margin-left:auto; margin-right:auto; ">
                             Add photos
                             <i class="fa fa-camera" aria-hidden="true"></i>

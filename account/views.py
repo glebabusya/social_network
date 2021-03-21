@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View
+
+from groups.models import Group
 from news.models import Note
 from django.utils import timezone
 from news.views import leave_comment
@@ -21,13 +23,16 @@ class ProfileView(LoginRequiredMixin, View):
 
         notes = Note.objects.filter(author=user).order_by('-post_time')
 
+        groups = user.group_set.all()
+
         context = {
             'user': user,
             'owner': False,
             'notes': notes,
             'back_url': 'profile',
             'username': user.username,
-            'url': 'profile'
+            'url': 'profile',
+            'groups': groups
         }
 
         try:

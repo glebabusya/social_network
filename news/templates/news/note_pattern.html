@@ -1,23 +1,38 @@
 <div class="block">
     <div class="post-header">
         <div style="display:flex;">
-            <a href="{% url 'profile' note.author.username %}" class="image-href">
-                <img src="{{ note.author.avatar.url }}">
-            </a>
-            <div style="display: flex; flex-direction: column">
-                <a href="{% url 'profile' note.author.username %}" class="blue-underline-href"
-                   style="margin-top:20px; margin-left:10px;">
-                    <span>{{ note.author.first_name }} {{ note.author.last_name }}</span>
+            {% if not note.group %}
+                <a href="{% url 'profile' note.author.username %}" class="image-href">
+                    <img src="{{ note.author.avatar.url }}">
                 </a>
-                <span style="color:grey; margin-left:10px">
-                            {{ note.post_time }}
-                        </span>
-            </div>
+                <div style="display: flex; flex-direction: column">
+                    <a href="{% url 'profile' note.author.username %}" class="blue-underline-href"
+                       style="margin-top:20px; margin-left:10px;">
+                        <span>{{ note.author.first_name }} {{ note.author.last_name }}</span>
+                    </a>
+                    <span style="color:grey; margin-left:10px">
+                        {{ note.post_time }}
+                    </span>
+                </div>
+            {% else %}
+                <a href="{% url 'group' note.group.short_name %}" class="image-href">
+                    <img src="{{ note.group.avatar.url }}">
+                </a>
+                <div style="display: flex; flex-direction: column">
+                    <a href="{% url 'group' note.group.short_name %}" class="blue-underline-href"
+                       style="margin-top:20px; margin-left:10px;">
+                        <span>{{ note.group.title }}</span>
+                    </a>
+                    <span style="color:grey; margin-left:10px">
+                        {{ note.post_time }}
+                    </span>
+                </div>
+            {% endif %}
 
 
         </div>
 
-        {% if url != 'note' and owner %}
+        {% if url != 'note' and owner %}<!Переделать>
             <div class="note-action-dropdown">
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
                 <div class="note-action-content">
@@ -38,6 +53,7 @@
         {% endif %}
 
     </div>
+
     <div class="post-container">
         {% if url != 'note' %}
             <a href="{% url 'note' note.pk back_url username %}" style="text-decoration: none; color:black">
@@ -88,22 +104,37 @@
         {% endif %}
     </div>
 
-    <div class="post-buttons top-line bottom-line">
-        {% if url == 'profile' %}
-            <a href="{% url 'like' note.pk url username %}" class="post-button">
-        {% elif url == 'note' %}
-            <a href="{% url 'like2' note.pk 'note' note.pk back_url username %}" class="post-button">
-        {% endif %}
-        {% if request.user.id in note.liked %}
-            <i class="fa fa-heart" aria-hidden="true" style="color:#ff0000"></i>
-            <span style="color:#ff0000">{{ note.like_set.all.count }}</span>
+    <div class="post-buttons top-line bottom-line  like-dropdown">
+        <a {% if url == 'note' %}
+            href="{% url 'like2' note.pk 'note' note.pk back_url username %}"
         {% else %}
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
-            <span>{{ note.like_set.all.count }}</span>
+            href="{% url 'like' note.pk 'profile' username %}"
         {% endif %}
+            class="post-button">
 
+            {% if request.user.id in note.liked %}
+                <i class="fa fa-heart" aria-hidden="true" style="color:#ff0000"></i>
+                <span style="color:#ff0000">{{ note.like_set.all.count }}</span>
+            {% else %}
+                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                <span>{{ note.like_set.all.count }}</span>
+            {% endif %}
+
+            {% if note.liked_6 %}
+                <div class="like-dropdown-content">
+                    <span>People like</span>
+                    <div>
+                        {% for user in note.liked_6 %}
+                            <a href="{% url 'profile' user.username %}" class="liked-image-href">
+                                <img src="{{ user.avatar.url }}">
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
 
         </a>
+
 
         <a href="" class="post-button">
             <i class="fa fa-comment-o post-button" aria-hidden="true"></i>
@@ -122,8 +153,8 @@
     <div class="comments-container">
         {% for comment in note.comment_set.all %}
             <div class="comment-header">
-                <div style="display:flex;">
-                    <a href="{% url 'profile' comment.author %}" class="image-href-small">
+                <div style="display:flex; margin-top: 10px">
+                    <a href="{% url 'profile' comment.author %}" class="image-href-small" style="margin-top: 10px;">
                         <img src="{{ comment.author.avatar.url }}">
                     </a>
                     <a href="{% url 'profile' comment.author %}" class="blue-underline-href"

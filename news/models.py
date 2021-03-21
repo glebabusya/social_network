@@ -2,10 +2,13 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from groups.models import Group
+from registration.models import Account
+
 
 class Note(models.Model):
-    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
-    # group = models.OneToOneField()
+    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True, null=True)
+    group = models.ForeignKey(to=Group, on_delete=models.PROTECT, blank=True, null=True)
     post_time = models.DateTimeField(default=timezone.now)
     text = models.TextField(blank=True)
     image1 = models.ImageField(blank=True, upload_to='notes')
@@ -14,11 +17,15 @@ class Note(models.Model):
     can_comment = models.BooleanField(default=True)
 
     def liked(self):
-        liked = self.like_set.values_list('user')
-        users_liked_id = []
-        for user_id in liked:
-            users_liked_id.append(user_id[0])
-        return users_liked_id
+        liked = self.like_set.values_list('user', flat=True)
+        return liked
+
+    def liked_6(self):
+        user_likes = self.liked()[:6]
+        users = []
+        for user_pk in user_likes:
+            users.append(Account.objects.get(pk=user_pk))
+        return users
 
 
 class Comment(models.Model):

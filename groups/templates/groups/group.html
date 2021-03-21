@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "news/news.html" %}
+    {% load static %}
+</head>
+<body>
+{% block body %}
+    <div class="container2">
+        <div class="column1">
+            <div class="block">
+                <div class="profile-current-info">
+                    <span style="font-size: 20px; padding-bottom: 10px; " class="bottom-line">
+                       {{ group.title }}
+                    </span>
+                    <span style="margin-top: 10px">
+                        {{ group.current_info }}
+                    </span>
+                </div>
+            </div>
+
+            {% if admin %}
+                <div class="block">
+                    <a href="{% url 'add_note' group.short_name %}" class="blue-underline-href">+ Add note</a>
+                </div>
+            {% endif %}
+
+            {% if admin or request.user in subscribers %}
+                {% for note in notes %}
+                    {% include 'news/note_pattern.html' %}
+                {% endfor %}
+
+            {% else %}<!Закрытая группа>
+                <div class="block">
+                    <div style="display:flex; flex-direction:column">
+                        <label style="font-size:30px; color:#828282;">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </label>
+                        <span>
+                        <b>This is a private group</b>
+                    </span>
+                        <span style="margin-top:10px;">
+                        Subscribe to {{ group.title }} to watch her posts, photos and other materials
+                    </span>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+
+        <div class="column2">
+            <div class="block">
+                <div class="user-avatar">
+                    <img src="{{ group.avatar.url }}">
+                </div>
+
+                {% if admin %}
+                    <a href="{% url 'redact_group' group.short_name %}" class="button-href muted-button">Redact</a>
+                {% else %}
+                    {% if request.user in group.subscribers.all %}
+                        <a href="{% url 'unsubscribe' group.short_name %}" class="button-href muted-button ">
+                            Unsubscribe
+                        </a>
+                    {% else %}
+                        <a href="{% url 'subscribe' group.short_name %}" class="button-href blue-button2">
+                            Subscribe
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="block">
+                <span>
+                    Subscribed by {{ subscribed_friends|length }} friends
+                </span>
+                <div class="friend-list" style="margin-bottom: 10px;">
+                    {% for friend in subscribed_friends %}
+                        <a href="{% url 'profile' friend.username %}" class="blue-underline-href image-href">
+                            <img src="{{ friend.avatar.url }}">
+                            {{ friend.first_name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if not group.closed or request.user in subscribers %}
+                <div class="block" style="text-align:left;">
+                <span>
+                    Subscribers <label style="color:grey">{{ subscribers.count }}</label>
+                </span>
+                    <div class="friend-list" style="margin-bottom: 10px;">
+                        {% for subscriber in subscribers %}
+                            <a href="{% url 'profile' subscriber.username %}" class="blue-underline-href image-href">
+                                <img src="{{ subscriber.avatar.url }}">
+                                {{ subscriber.first_name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+    </div>
+
+{% endblock %}
+</body>
+</html>
