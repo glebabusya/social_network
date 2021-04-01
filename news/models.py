@@ -2,13 +2,13 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-from groups.models import Group
+from community.models import Community
 from registration.models import Account
 
 
 class Note(models.Model):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True, null=True)
-    group = models.ForeignKey(to=Group, on_delete=models.PROTECT, blank=True, null=True)
+    group = models.ForeignKey(to=Community, on_delete=models.PROTECT, blank=True, null=True)
     post_time = models.DateTimeField(default=timezone.now)
     text = models.TextField(blank=True)
     image1 = models.ImageField(blank=True, upload_to='notes')

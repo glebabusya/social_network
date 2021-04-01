@@ -97,9 +97,6 @@ class RegistrationView(View):
         password_confirm = request.POST.get('password-confirm')
         birthday = request.POST.get('birthday')
 
-        first_name[0] = first_name[0].upper()
-        last_name[0] = last_name[0].upper()
-
         for symbol in self.symbols:
             if symbol in username:
                 messages.error(request, 'Create a unique user')
@@ -114,7 +111,7 @@ class RegistrationView(View):
                                                             birthday=birthday,
                                                             password=password)
                 user.save()
-                return redirect('profile')  # redirect to user profile
+                return redirect('profile', user)  # redirect to user profile
             except IntegrityError:
                 messages.error(request, 'Create a unique user')
         else:

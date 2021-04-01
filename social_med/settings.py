@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'news',
     'registration',
     'account',
-    'groups'
+    'community'
 ]
 
 MIDDLEWARE = [

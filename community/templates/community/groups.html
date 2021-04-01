@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "news/news.html" %}
+    {% load static %}
+</head>
+<body>
+{% block body %}
+    <div class="main-container">
+        <div class="inner-container ">
+            <div style="display: flex; margin-top:10px;" class="bottom-line">
+                <span style="margin-right: auto; margin-left:20px; margin-bottom: 5px;">Groups <label>{{ my_groups|length }}</label></span>
+                <a href="{% url 'create_group' %}" class="blue-button2 button-href"
+                   style="margin-left: auto; margin-right: 20px; margin-bottom: 5px;">Create group</a>
+            </div>
+            <form method="post" class="search-form">
+                {% csrf_token %}
+                <input type="search" class="search-input" placeholder="Group" name="search" id="search">
+                <input type="submit" class="search-button" value="Search">
+            </form>
+            {% if search %}
+                <span>
+                    Searching {{ search }}
+                </span>
+            {% endif %}
+            {% for group in my_groups %}
+                <div class="row1" style="margin-left: 15px; margin-bottom: 10px;">
+                    <a href="{% url 'group' group.short_name %}" class="image-href">
+                        <img src="{{ group.avatar.url }}">
+                    </a>
+                    <div class="group-small-info">
+                        <a href="{% url 'group' group.short_name %}" class="blue-underline-href">
+                            {{ group.title }}
+                        </a>
+                        <label> {{ group.current_info }} </label>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if search %}
+                <div class="top-line">
+                    {% for group in all_groups %}
+                        <div class="row1" style="margin-left: 15px; margin-bottom: 10px;">
+                            <a href="{% url 'group' group.short_name %}" class="image-href">
+                                <img src="{{ group.avatar.url }}">
+                            </a>
+                            <div class="group-small-info">
+                                <a href="{% url 'group' group.short_name %}" class="blue-underline-href">
+                                    {{ group.title }}
+                                </a>
+                                <label> {{ group.current_info }} </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}
+</body>
+</html>

@@ -12,31 +12,33 @@
     <div class="column1">
         <div class="block">
             <div class="user-avatar">
-                <img src="{{user.avatar.url}}">
+                <img src="{{ user.avatar.url }}">
             </div>
-            {%if owner%}
-            <a href="{%url 'redact' user.username%}" class="button-href muted-button">Redact</a>
-            {%else%}
-            <a href class="button-href blue-button2"><!Ссылка на сообщения>
-                Send message
-            </a>
-            <br>
-            {%if request.user in friends%}
-            <a href="{%url 'add_friend' username=user.username operation='remove'%}" class="button-href blue-button2">
-                Remove friend
-            </a>
-            {%else%}
-            <a href="{%url 'add_friend' username=user.username operation='add'%}" class="button-href blue-button2">
-                Add friend
-            </a>
-            {%endif%}
-            {%endif%}
+            {% if owner %}
+                <a href="{% url 'redact' user.username %}" class="button-href muted-button">Redact</a>
+            {% else %}
+                <a href class="button-href blue-button2"><!Ссылка на сообщения>
+                    Send message
+                </a>
+                <br>
+                {% if request.user in friends %}
+                    <a href="{% url 'add_friend' name=user.username operation='remove' %}"
+                       class="button-href blue-button2">
+                        Remove friend
+                    </a>
+                {% else %}
+                    <a href="{% url 'add_friend' name=user.username operation='add' %}"
+                       class="button-href blue-button2">
+                        Add friend
+                    </a>
+                {% endif %}
+            {% endif %}
         </div>
 
-        {%if request.user in friends or not user.closed or owner%}
-        <div class="block" style="text-align:left;">
+        {% if request.user in friends or not user.closed or owner %}
+            <div class="block" style="text-align:left;">
             <span>
-                Friends <label style="color:grey">{{friends.count}}</label>
+                Friends <label style="color:grey">{{ friends.count }}</label>
             </span>
 
             <div class="friend-list bottom-line" style="margin-bottom: 10px;">
@@ -202,7 +204,7 @@
 
             {% if owner %}
                 <div class="block">
-                    <a href="{% url 'add_note' 'profile' %}" class="blue-underline-href">+ Add note</a>
+                    <a href="{% url 'add_note' %}" class="blue-underline-href">+ Add note</a>
                 </div>
             {% endif %}
 

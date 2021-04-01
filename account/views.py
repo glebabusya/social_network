@@ -2,8 +2,6 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View
-
-from groups.models import Group
 from news.models import Note
 from django.utils import timezone
 from news.views import leave_comment
@@ -15,22 +13,22 @@ from .models import Friend
 class ProfileView(LoginRequiredMixin, View):
     login_url = 'registration'
 
-    def get(self, request, username):
+    def get(self, request, name):
         try:
-            user = get_user_model().objects.get(username=username)
+            user = get_user_model().objects.get(username=name)
         except get_user_model().DoesNotExist:
             return redirect('news')
 
         notes = Note.objects.filter(author=user).order_by('-post_time')
 
-        groups = user.group_set.all()
+        groups = user.community_set.all()
 
         context = {
             'user': user,
             'owner': False,
             'notes': notes,
             'back_url': 'profile',
-            'username': user.username,
+            'name': user.username,
             'url': 'profile',
             'groups': groups
         }
@@ -61,17 +59,17 @@ class ProfileView(LoginRequiredMixin, View):
 
         return render(request, 'account/profile.html', context)
 
-    def post(self, request, username):
+    def post(self, request, name):
         leave_comment(request)
-        return redirect('profile', username)
+        return redirect('profile', name)
 
 
 class RedactProfileView(LoginRequiredMixin, View):
     login_url = 'registration'
 
-    def get(self, request, username):
+    def get(self, request, name):
         try:
-            user = get_user_model().objects.get(username=username)
+            user = get_user_model().objects.get(username=name)
         except get_user_model().DoesNotExist:
             return redirect('news')
 
@@ -90,16 +88,16 @@ class RedactProfileView(LoginRequiredMixin, View):
 
         return render(request, 'account/redact.html', context)
 
-    def post(self, request, username):
+    def post(self, request, name):
         user = request.user
         form = forms.ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-        return redirect('profile', username)
+        return redirect('profile', name)
 
 
-def change_friends(request, username, operation):
-    new_friend = Account.objects.get(username=username)
+def change_friends(request, name, operation):
+    new_friend = Account.objects.get(username=name)
     if operation == 'add':
         Friend.make_friend(request.user, new_friend)
         # Отправить уведомление

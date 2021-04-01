@@ -27,7 +27,7 @@
                 </div>
             {% endif %}
 
-            {% if admin or request.user in subscribers %}
+            {% if admin or request.user in subscribers or not group.closed %}
                 {% for note in notes %}
                     {% include 'news/note_pattern.html' %}
                 {% endfor %}

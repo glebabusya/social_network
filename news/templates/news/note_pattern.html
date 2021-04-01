@@ -32,15 +32,15 @@
 
         </div>
 
-        {% if url != 'note' and owner %}<!Переделать>
+        {% if url != 'note' and owner or admin %}<!Переделать>
             <div class="note-action-dropdown">
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
                 <div class="note-action-content">
-                    <a href="{% url 'delete_note' note.pk back_url username %}" style="margin-top: 5px;">
+                    <a href="{% url 'delete_note' note.pk back_url name %}" style="margin-top: 5px;">
                         delete note
                     </a>
 
-                    <a href="{% url 'comment' note.pk back_url username %}">
+                    <a href="{% url 'comment' note.pk back_url name %}">
                         {% if note.can_comment %}
                             disable comments
                         {% else %}
@@ -56,7 +56,7 @@
 
     <div class="post-container">
         {% if url != 'note' %}
-            <a href="{% url 'note' note.pk back_url username %}" style="text-decoration: none; color:black">
+            <a href="{% url 'note' note.pk back_url name %}" style="text-decoration: none; color:black">
                 <label>
                     {{ note.text }}
                 </label>
@@ -104,13 +104,8 @@
         {% endif %}
     </div>
 
-    <div class="post-buttons top-line bottom-line  like-dropdown">
-        <a {% if url == 'note' %}
-            href="{% url 'like2' note.pk 'note' note.pk back_url username %}"
-        {% else %}
-            href="{% url 'like' note.pk 'profile' username %}"
-        {% endif %}
-            class="post-button">
+    <div class="post-buttons top-line bottom-line ">
+        <a href="{% url 'like' note.pk back_url name %}" class="post-button">
 
             {% if request.user.id in note.liked %}
                 <i class="fa fa-heart" aria-hidden="true" style="color:#ff0000"></i>

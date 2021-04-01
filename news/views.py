@@ -2,7 +2,7 @@ from django.db import connection
 from django.shortcuts import render, redirect
 from django.views.generic import View
 
-from groups.models import Group
+from community.models import Community
 from registration.models import Account
 from . import models
 from django.utils import timezone
@@ -34,16 +34,14 @@ def like(request, note_pk, back_url, *args, **kwargs):  # Переделать �
         liked.delete()
     except Like.DoesNotExist:
         Like(user=user, note=note).save()
-    if args or kwargs:
-        return redirect(back_url, *args, **kwargs)
-    else:
-        return redirect(back_url)
+
+    return redirect(back_url, *args, **kwargs)
     # Отправить уведомление
 
 
 def delete_note(request, note_pk, back_url, *args, **kwargs):
     try:
-        note = Note.objects.get(author=request.user, pk=note_pk)
+        note = Note.objects.get(pk=note_pk)
         note.delete()
     except Note.DoesNotExist:
         pass
@@ -79,15 +77,15 @@ class NewsView(LoginRequiredMixin, View):
 class AddNoteView(LoginRequiredMixin, View):
     login_url = 'registration'
 
-    def get(self, request, group_name=None):
+    def get(self, request, name=None):
         context = {}
-        if group_name:
+        if name:
             try:
-                group = Group.objects.get(admin=request.user, short_name=group_name)
+                group = Community.objects.get(admin=request.user, short_name=name)
                 context['author'] = group
                 context['back_url'] = 'group'
                 context['back_url_data'] = group.short_name
-            except Group.DoesNotExist:
+            except Community.DoesNotExist:
                 return redirect('news')
         else:
             context['author'] = request.user
@@ -95,11 +93,11 @@ class AddNoteView(LoginRequiredMixin, View):
             context['back_url_data'] = request.user.username
         return render(request, 'news/add_note.html', context)
 
-    def post(self, request, group_name=None):
+    def post(self, request, name=None):
         files = request.FILES.getlist('note_img')
-        if group_name:
+        if name:
             try:
-                group = Group.objects.get(admin=request.user, short_name=group_name)
+                group = Community.objects.get(admin=request.user, short_name=name)
                 try:
                     note = models.Note(group=group, post_time=timezone.now(),
                                        text=request.POST.get('note_text'),
@@ -122,7 +120,7 @@ class AddNoteView(LoginRequiredMixin, View):
                             else:
                                 return redirect('group', group.short_name)
 
-            except Group.DoesNotExist:
+            except Community.DoesNotExist:
                 return redirect('news')
         else:
             try:
@@ -147,7 +145,7 @@ class AddNoteView(LoginRequiredMixin, View):
                             return redirect('profile', request.user.username)
 
         note.save()
-        if group_name:
+        if name:
             return redirect('group', group.short_name)
         else:
             return redirect('profile', request.user.username)
@@ -171,7 +169,7 @@ class NoteView(LoginRequiredMixin, View):
             'note': note,
             'user': user,
             'back_url': url,
-            'username': name
+            'name': name
         }
         return render(request, 'news/note.html', context)
 
